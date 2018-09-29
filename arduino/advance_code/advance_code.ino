@@ -138,7 +138,7 @@ void loop() {
   if(Serial.available() > 0) {  // Send data only when you receive data:
     data = Serial.read();     
     Serial.println(data);       
-      //onTouch();
+      onTouch();
 
       
   }  
