@@ -134,6 +134,22 @@ char fa14 = '+';
     frontDown();
     rearDown();
     }
+
+    void start(){
+      if(data[i-1]=='Z' && password == 1){
+      bool start = true;
+      Serial.println("start");
+      }              
+    }
+
+    void endl(){
+      if(data[i-1]=='x' && password == 1){
+      bool endl= true;
+      Serial.println("endl");
+      }              
+    }
+
+
     
 
 void setup() {
@@ -162,28 +178,26 @@ void loop() {
     value = Serial.read();
     data[i]=value;
     i++;
-//    Serial.println(value);
-//    Serial.println(data);
 
-    if(data[0]==passwd[0] && data[1]==passwd[1] && data[2]==passwd[2] && data[3]==passwd[3] && data[4]==passwd[4] && data[5]==passwd[5] && data[6]==passwd[6]){
+    Serial.print(i);
+    Serial.println(value);
+    Serial.println(ganti);
+
+    if(data[0]==passwd[0] && data[1]==passwd[1] && data[2]==passwd[2] && data[3]==passwd[3] && data[4]==passwd[4] && data[5]==passwd[5] && data[6]==passwd[6] && data[7]==passwd[7] && data[8]==passwd[8] && data[9]==passwd[9] && data[10]==passwd[10]){
             password=true;
-            //Serial.println("password benar");
+            Serial.println("password benar");
       }
-    else if(data[i-1]=='9' && password == 1){
-                resetFunc();
-            }
-//    else if(data[i-1]=='Z' && password == 1){
-//                ganti[i]=data[i];
-//                Serial.println(ganti);
-//                ;
-//            }
+    else if(data[i-1]=='9'){
+      resetFunc();
+    }    
+    onTouch();
+    start();
+    endl();
 
-       onTouch();
   }
   Serial.flush();
   
 } //end of loop
-
 
 
 
