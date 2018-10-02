@@ -1,4 +1,5 @@
 #include <SoftwareSerial.h>
+#include <EEPROM.h>
 String inString;
 char buffer[100];
 char inChar;
@@ -6,33 +7,41 @@ int i;
 
 bool mulai;
 bool endline;
+bool save;
 char value;
-char pass[6]={'r', 'e', 'v', 'o', 'l', 't'};
-char data[200];
+char pass[15];
+char pa[15] = {'a', 'k', 'u', 'a'};
+char data[800];
 char password[15];
 int pos1;
+int pos2;
 int j;
+int k;
 
 
     void start(){
       if(data[i-1]=='Z'){
-      mulai = true;
-      pos1 = i;
-      Serial.println("start");
+        mulai = true;
+          pos1 = i;
+            Serial.println("start");
+               Serial.println(pos1);
       }              
     }
 
     void endl(){
       if(data[i-1]=='x'){
-      endline = true;
-      Serial.println("endl");
+        endline = true;
+          pos2 = i - 1;
+            Serial.println("endl");
       }              
     }
     
 void setup() {
   // put your setup code here, to run once:
     Serial.begin(38400);
-    Serial.print("reboot succes");
+    Serial.println("reboot succes");
+    EEPROM.get(0, pass);
+    Serial.println(pass);
 }
 
 void (*resetFunc)(void) = 0;
@@ -41,47 +50,36 @@ void loop() {
   // put your main code here, to run repeatedly:
   if(Serial.available() > 0) {
     value = Serial.read();
-    data[i] = value;
-    i++;
+      data[i] = value;
+        i++;
 
     start();
     endl();
+    
     Serial.print(i);
-    Serial.println(data);
-    Serial.println(password);
-
-    if(mulai==true){
-      data[i] = value;  
-      password[j] = data[pos1++];
-      j++;
-//        Serial.print(j);
-//        Serial.print(i);
-//        Serial.println(data);
-//        Serial.println(password);
-        //Serial.println(value);
-        delay(500);
+      Serial.println(data);
 
     if(endline==true){
-      data[i] = value;  
-      password[j] = data[pos1++];
-      j++;
-        delay(500);
-    }
-      
-//      for(j=0; j<sizeof(pass); j++){
-//        
-//        Serial.print(j);
-//        Serial.print(i);
-//        Serial.println(data);
-//        delay(500);
-//        
-//        }
+
+      while(pos1<pos2){
+          password[j] = data[pos1];
+            pos1++;
+            j++;  
+            Serial.print(password);   
+        }
+        save = true;
+
       }
-    
-    else if(data[i-1]=='9'){
+
+    if(save==true){
+      EEPROM.put(0, password); 
+        Serial.println("put done!!!");
+      }
+
+    if(data[i-1]=='9'){
       resetFunc();
     }  
-
+}
+   
     delay (500);
-  }
 }

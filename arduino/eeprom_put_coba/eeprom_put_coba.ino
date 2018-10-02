@@ -1,7 +1,7 @@
 
 #include <EEPROM.h>
 
-struct password {char pass[15];};
+struct password {char pass[10];};
 
 void setup() {
 
