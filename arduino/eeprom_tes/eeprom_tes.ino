@@ -13,7 +13,7 @@ bool mulai;
 bool endline;
 bool save;
 
-char data[750];
+char data[600];
 char pass;
 
 int i = 0;
@@ -21,6 +21,8 @@ int j;
 int pos1;
 int pos2;
 
+
+int sw = 12;
 int a1 = 5;
 int a2 = 7;
 int a3 = 6;
@@ -28,7 +30,18 @@ int a4 = 8;
 int a5 = 9;
 int a6 = 11;
 int a7 = 10;
-int a8 = 12;
+int a8 = 4;
+
+float senVal1;
+float senVal2;
+float senVal3;
+float senVal4;
+float senVal_sw;
+
+float voltage;
+float pressure_pascal;
+int pressure_bar;
+int pressure_psi;
 
 char fa1 = '!';
 char fa2 = '@';
@@ -96,9 +109,6 @@ void login() {
     delay(2000);
     Serial.println(" ");
   }
-  //    if(data[0]!=passwd[0] && data[1]!=passwd[1] && data[2]!=passwd[2] && data[3]!=passwd[3] && data[4]!=passwd[4] && data[5]!=passwd[5] && data[6]!=passwd[6] && data[7]!=passwd[7] && data[8]!=passwd[8] && data[9]!=passwd[9] && data[10]!=passwd[10]){
-  //        Serial.println("Wrong Password");
-  //    }
 }
 
 void view() {
@@ -118,62 +128,6 @@ void resetpasswd() {
   }
 }
 
-void allLow() {
-  digitalWrite(a1, LOW);
-  digitalWrite(a2, LOW);
-  digitalWrite(a3, LOW);
-  digitalWrite(a4, LOW);
-  digitalWrite(a5, LOW);
-  digitalWrite(a6, LOW);
-  digitalWrite(a7, LOW);
-  digitalWrite(a8, LOW);
-}
-void calibration() {
-  if (data[i - 1] == '<') {
-    digitalWrite(a1, HIGH);
-    delay(3000);
-    allLow();
-    digitalWrite(a3, HIGH);
-    delay(2000);
-    allLow();
-    digitalWrite(a2, HIGH);
-    delay(3000);
-    allLow();
-    digitalWrite(a4, HIGH);
-    delay(2000);
-    allLow();
-    digitalWrite(a5, HIGH);
-    delay(3000);
-    allLow();
-    digitalWrite(a7, HIGH);
-    delay(2000);
-    allLow();
-    digitalWrite(a6, HIGH);
-    delay(3000);
-    allLow();
-    digitalWrite(a8, HIGH);
-    delay(2000);
-    allLow();
-    frontUp();
-    delay(3000);
-    allLow();
-    frontDown();
-    delay(2000);
-    allLow();
-    rearUp();
-    delay(3000);
-    allLow();
-    rearDown();
-    delay(2000);
-    allLow();
-    allUp();
-    delay(3000);
-    allLow();
-    allDown();
-    delay(2000);
-    allLow();
-  }
-}
 
 void onTouch() {
   if (data[i - 1] == fa1 && password == 1) {
@@ -218,7 +172,7 @@ void onTouch() {
   else if (data[i - 1] == fa14 && password == 1) {
     allDown();
   }
-  else {
+  else if(data[i - 1] == 's' && password == 1) {
     allLow();
   }
 }
@@ -253,18 +207,204 @@ void allDown() {
   rearDown();
 }
 
+void sensValue1(){
+  // voltage
+  voltage = (senVal1 * 5.0) / 1024.0;
+  // pascal
+  pressure_pascal = (3.0*((float)voltage-0.25))*100000.0;
+  //bar
+  pressure_bar = pressure_pascal/1e5;
+  //psi
+  pressure_psi = (int)pressure_bar * 14.5038;
+  Serial.print(pressure_psi);
+  Serial.println(" Psi");
+  delay(100);
+  
+  }
+
+void sensValue2(){
+  // voltage
+  voltage = (senVal2 * 5.0) / 1024.0;
+  // pascal
+  pressure_pascal = (3.0*((float)voltage-0.25))*100000.0;
+  //bar
+  pressure_bar = pressure_pascal/1e5;
+  //psi
+  pressure_psi = (int)pressure_bar * 14.5038;
+  Serial.print(pressure_psi);
+  Serial.println(" Psi");
+  delay(100);
+  
+  }
+
+  void sensValue3(){
+  // voltage
+  voltage = (senVal3 * 5.0) / 1024.0;
+  // pascal
+  pressure_pascal = (3.0*((float)voltage-0.25))*100000.0;
+  //bar
+  pressure_bar = pressure_pascal/1e5;
+  //psi
+  pressure_psi = (int)pressure_bar * 14.5038;
+  Serial.print(pressure_psi);
+  Serial.println(" Psi");
+  delay(100);
+  
+  }
+
+  void sensValue4(){
+  // voltage
+  voltage = (senVal4 * 5.0) / 1024.0;
+  // pascal
+  pressure_pascal = (3.0*((float)voltage-0.25))*100000.0;
+  //bar
+  pressure_bar = pressure_pascal/1e5;
+  //psi
+  pressure_psi = (int)pressure_bar * 14.5038;
+  Serial.print(pressure_psi);
+  Serial.println(" Psi");
+  delay(100);
+  
+  }
+
+  void sensValueSW(){
+  // voltage
+  voltage = (senVal_sw * 5.0) / 1024.0;
+  // pascal
+  pressure_pascal = (3.0*((float)voltage-0.25))*100000.0;
+  //bar
+  pressure_bar = pressure_pascal/1e5;
+  //psi
+  pressure_psi = (int)pressure_bar * 14.5038;
+  Serial.print(pressure_psi);
+  Serial.println(" Psi");
+  delay(100);
+  
+  }
+
+  void vValue(){
+    sensValue1();
+    sensValue2();
+    sensValue3();
+    sensValue4();
+    sensValueSW();
+  }
+
+  void calibration() {
+  if (data[i - 1] == '<' && password == 1) {
+    digitalWrite(a1, HIGH); //front left up
+    Serial.println("Front Left Up");
+    delay(3000);
+    allLow();
+    digitalWrite(a3, HIGH); //front left down
+    Serial.println("Front Left Down");
+    delay(2000);
+    allLow();
+    digitalWrite(a2, HIGH); //front right up
+    Serial.println("Front Right Up");
+    delay(3000);
+    allLow();
+    digitalWrite(a4, HIGH); //front right down
+    Serial.println("Front Right Down");
+    delay(2000);
+    allLow();
+    digitalWrite(a5, HIGH); //rear left up
+    Serial.println("Rear Left Up");
+    delay(3000);
+    allLow();
+    digitalWrite(a7, HIGH); //rear left down
+    Serial.println("Rear Left Down");
+    delay(2000);
+    allLow();
+    digitalWrite(a6, HIGH); //rear right up
+    Serial.println("Rear Right Up");
+    delay(3000);
+    allLow();
+    digitalWrite(a8, HIGH); //rear right down
+    Serial.println("Rear Left Down");
+    delay(2000);
+    allLow();
+    frontUp(); //front up
+    Serial.println("Front Up");
+    delay(3000);
+    allLow();
+    frontDown(); //front down
+    Serial.println("Front Down");
+    delay(2000);
+    allLow();
+    rearUp(); //rear up
+    Serial.println("Rear Up");
+    delay(3000);
+    allLow();
+    rearDown(); //rear down
+    Serial.println("Rear Down");
+    delay(2000);
+    allLow(); 
+    allUp(); //all up
+    Serial.println("All Up");
+    delay(3000);
+    allLow();
+    allDown(); //all down
+    Serial.println("All Down");
+    delay(2000);
+    Serial.println("Calibration Succes");
+    allLow();
+    delay(2000);
+    Serial.println(" ");
+    }
+  }
+
+  void down(){
+    if(data[i - 1] == ';' && password == 1){
+       allDown();
+       delay(2500);
+       allLow();
+      }
+    
+    }
+
+  void swComp(){
+    if (data[i - 1] == '?' && password == 1){
+      Serial.println("Kompressor on");
+      digitalWrite(sw, HIGH);
+      }
+    else if(data[i - 1] == '/' && password == 1){
+      Serial.println("Kompressor off");
+      digitalWrite(sw, LOW);
+      }
+    }
+
+  void allLow() {
+    digitalWrite(a1, LOW);
+    digitalWrite(a2, LOW);
+    digitalWrite(a3, LOW);
+    digitalWrite(a4, LOW);
+    digitalWrite(a5, LOW);
+    digitalWrite(a6, LOW);
+    digitalWrite(a7, LOW);
+    digitalWrite(a8, LOW);
+  }
+
 
 void setup() {
 
   Serial.begin(38400);
+  
   pinMode(a1, OUTPUT);
-  pinMode(a2, OUTPUT);
-  pinMode(a3, OUTPUT);
-  pinMode(a4, OUTPUT);
-  pinMode(a5, OUTPUT);
-  pinMode(a6, OUTPUT);
-  pinMode(a7, OUTPUT);
-  pinMode(a8, OUTPUT);
+    pinMode(a2, OUTPUT);
+      pinMode(a3, OUTPUT);
+        pinMode(a4, OUTPUT);
+          pinMode(a5, OUTPUT);
+            pinMode(a6, OUTPUT);
+              pinMode(a7, OUTPUT);
+                pinMode(a8, OUTPUT);
+                  pinMode(sw, OUTPUT);
+
+  senVal1 = analogRead(A0);
+    senVal2 = analogRead(A1);
+      senVal3 = analogRead(A2);
+        senVal4 = analogRead(A3);
+           senVal_sw = analogRead(A4);
 
   allLow();
 
@@ -289,7 +429,10 @@ void loop() {
     view();
     resetpasswd();
     calibration();
+//    vValue();
     onTouch();
+    down();
+    swComp();
     start();
     endl();
     gpass();
