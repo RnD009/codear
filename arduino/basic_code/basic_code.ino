@@ -23,19 +23,13 @@ int pos2;
 
 
 int sw = 4;
-int a1 = 5;
-int a2 = 7;
-int a3 = 6;
-int a4 = 8;
-int a5 = 9;
-int a6 = 11;
-int a7 = 10;
-int a8 = 12;
+int a1 = 9;
+int a2 = 10;
+int a3 = 11;
+int a4 = 12;
 
 int senVal1;
 int senVal2;
-int senVal3;
-int senVal4;
 int senVal_sw;
 
 float voltage;
@@ -53,14 +47,6 @@ char fa3 = '|';
 char fa4 = '$';
 char fa5 = '%';
 char fa6 = '^';
-char fa7 = '&';
-char fa8 = '*';
-char fa9 = '(';
-char fa10 = ')';
-char fa11 = '-';
-char fa12 = '_';
-char fa13 = '=';
-char fa14 = '+';
 
 
 void getpassee() {
@@ -145,33 +131,9 @@ void onTouch() {
     digitalWrite(a4, HIGH);
   }
   else if (data[i - 1] == fa5 && password == 1) {
-    digitalWrite(a5, HIGH);
-  }
-  else if (data[i - 1] == fa6 && password == 1) {
-    digitalWrite(a6, HIGH);
-  }
-  else if (data[i - 1] == fa7 && password == 1) {
-    digitalWrite(a7, HIGH);
-  }
-  else if (data[i - 1] == fa8 && password == 1) {
-    digitalWrite(a8, HIGH);
-  }
-  else if (data[i - 1] == fa9 && password == 1) {
-    frontUp();
-  }
-  else if (data[i - 1] == fa10 && password == 1) {
-    frontDown();
-  }
-  else if (data[i - 1] == fa11 && password == 1) {
-    rearUp();
-  }
-  else if (data[i - 1] == fa12 && password == 1) {
-    rearDown();
-  }
-  else if (data[i - 1] == fa13 && password == 1) {
     allUp();
   }
-  else if (data[i - 1] == fa14 && password == 1) {
+  else if (data[i - 1] == fa6 && password == 1) {
     allDown();
   }
   else if (data[i - 1] == 's' && password == 1) {
@@ -181,22 +143,18 @@ void onTouch() {
 
 void frontUp() {
   digitalWrite(a1, HIGH);
-  digitalWrite(a2, HIGH);
 }
 
 void frontDown() {
-  digitalWrite(a3, HIGH);
-  digitalWrite(a4, HIGH);
+  digitalWrite(a2, HIGH);
 }
 
 void rearUp() {
-  digitalWrite(a5, HIGH);
-  digitalWrite(a6, HIGH);
+  digitalWrite(a3, HIGH);
 }
 
 void rearDown() {
-  digitalWrite(a7, HIGH);
-  digitalWrite(a8, HIGH);
+  digitalWrite(a4, HIGH);
 }
 
 void allUp() {
@@ -237,32 +195,6 @@ void sensValue2() {
 
 }
 
-void sensValue3() {
-  // voltage
-  voltage = (senVal3 * 5.0) / 1024.0;
-  // pascal
-  pressure_pascal = (3.0 * ((float)voltage - 0.25)) * 100000.0;
-  //bar
-  pressure_bar = pressure_pascal / 1e5;
-  //psi
-  pressure_psi = (int)pressure_bar * 14.5038;
-  Serial.print(pressure_psi);
-  Serial.print(":");
-}
-
-void sensValue4() {
-  // voltage
-  voltage = (senVal4 * 5.0) / 1024.0;
-  // pascal
-  pressure_pascal = (3.0 * ((float)voltage - 0.25)) * 100000.0;
-  //bar
-  pressure_bar = pressure_pascal / 1e5;
-  //psi
-  pressure_psi = (int)pressure_bar * 14.5038;
-  Serial.print(pressure_psi);
-  Serial.print(":");
-}
-
 void sensValueSW() {
   // voltage
   voltage = (senVal_sw * 5.0) / 1024.0;
@@ -280,8 +212,6 @@ void vValue() {
     //Serial.println("val");
      sensValue1();
      sensValue2();
-     sensValue3();
-     sensValue4();
      sensValueSW();  
      //Serial.print(":");
     }
@@ -289,69 +219,24 @@ void vValue() {
 
 void calibration() {
   if (data[i - 1] == '<' && password == 1) {
-    //Serial.println("kal");
-    digitalWrite(a1, HIGH); //front left up
-    //Serial.println("Front Left Up");
-    delay(3000);
-    allLow();
-    
-    digitalWrite(a3, HIGH); //front left down
-    //Serial.println("Front Left Down");
-    delay(2000);
-    allLow();
-    delay(2000);
-    
-    digitalWrite(a2, HIGH); //front right up
-    //Serial.println("Front Right Up");
-    delay(3000);
-    allLow();
-    
-    digitalWrite(a4, HIGH); //front right down
-    //Serial.println("Front Right Down");
-    delay(2000);
-    allLow();
-    delay(2000);
-    
-    digitalWrite(a5, HIGH); //rear left up
-    //Serial.println("Rear Left Up");
-    delay(3000);
-    allLow();
-    
-    digitalWrite(a7, HIGH); //rear left down
-    //Serial.println("Rear Left Down");
-    delay(2000);
-    allLow();
-    delay(2000);
-    
-    digitalWrite(a6, HIGH); //rear right up
-    //Serial.println("Rear Right Up");
-    delay(3000);
-    allLow();
-    
-    digitalWrite(a8, HIGH); //rear right down
-    //Serial.println("Rear Left Down");
-    delay(2000);
-    allLow();
-    delay(2000);
-    
     frontUp(); //front up
-    //Serial.println("Front Up");
+    //Serial.println("front up");
     delay(3000);
     allLow();
     
     frontDown(); //front down
-    //Serial.println("Front Down");
+    //Serial.println("front down");
     delay(2000);
     allLow();
     delay(2000);
     
-    rearUp(); //rear up
-    //Serial.println("Rear Up");
+    rearUp(); //rearUp()
+    //Serial.println("rearUp()");
     delay(3000);
     allLow();
     
     rearDown(); //rear down
-    //Serial.println("Rear Down");
+    //Serial.println("Front Right Down");
     delay(2000);
     allLow();
     delay(2000);
@@ -364,9 +249,10 @@ void calibration() {
     allDown(); //all down
     //Serial.println("All Down");
     delay(2000);
-    //Serial.println("Calibration Succes");
     allLow();
+    //Serial.println("Calibration succes");
     delay(2000);
+    
     //Serial.println(" ");
   }
 }
@@ -420,10 +306,6 @@ void allLow() {
   digitalWrite(a2, LOW);
   digitalWrite(a3, LOW);
   digitalWrite(a4, LOW);
-  digitalWrite(a5, LOW);
-  digitalWrite(a6, LOW);
-  digitalWrite(a7, LOW);
-  digitalWrite(a8, LOW);
 }
 
 void setup() {
@@ -433,22 +315,17 @@ void setup() {
   pinMode(a2, OUTPUT);
   pinMode(a3, OUTPUT);
   pinMode(a4, OUTPUT);
-  pinMode(a5, OUTPUT);
-  pinMode(a6, OUTPUT);
-  pinMode(a7, OUTPUT);
-  pinMode(a8, OUTPUT);
+
   pinMode(sw, OUTPUT);
 
   senVal1 = analogRead(A0);
   senVal2 = analogRead(A1);
-  senVal3 = analogRead(A2);
-  senVal4 = analogRead(A3);
+
   senVal_sw = analogRead(A4);
 
   allLow();
 
   getpassee();
-
 
 }
 void (*resetFunc)(void) = 0;
